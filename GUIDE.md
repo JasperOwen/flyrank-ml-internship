@@ -97,6 +97,8 @@ this repo is the technical foundation they all build on.
    %pip install -q duckdb huggingface_hub pandas scikit-learn matplotlib
    ```
    A fresh Colab/Jupyter kernel doesn't have `duckdb` until you install it in the notebook.
+   And **never hardcode your Hugging Face token in a cell** — your repo is public. Use
+   `getpass` or Colab's Secrets (🔑) panel; leaked tokens get auto-revoked, but don't test it.
 4. Keep CI green: it re-runs the pipeline and **fails if any dataset CSV is committed** —
    your fork inherits that protection.
 5. Review happens **once, at the end of the track**: after your capstone we go through every
