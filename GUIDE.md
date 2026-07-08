@@ -9,6 +9,7 @@ what you may edit, how the pieces connect, and where your own work goes.
 |---|---|---|
 | `README.md` | Front door: quickstart + safety summary | Read once |
 | `GUIDE.md` | This file | Read once, revisit when unsure |
+| `SETUP.md` | GitHub + Colab (Week 1) and Hugging Face access (Week 3) — with the silent pitfalls | Follow it at those two moments |
 | `DATA_USE.md` | The data rules you agree to by working here | **Read before touching the data** |
 | `LICENSE` | MIT — covers the **code** only; the data is governed by `DATA_USE.md` | Reference |
 | `data/raw/content_refresh_anonymized.csv` | The one dataset that ships here: 30,000 pseudonymized pages × 44 columns | **Read-only.** Never add files under `data/` |
@@ -87,8 +88,10 @@ this repo is the technical foundation they all build on.
 
 ## 5. Build & submit flow
 
-1. Clone this repo, then push it to **your own public GitHub repo** — that's your workspace,
-   your submission, and your portfolio.
+1. Make your own copy: **Use this template → Create a new repository** (public) on the repo
+   page — that copy is your workspace, your submission, and your portfolio. (Prefer the
+   terminal? `git clone` this repo and push it to an **empty** repo you own — no README tick,
+   or the push is rejected.)
 2. Share your repo URL as part of **Assignment 1** on the InternHQ board. That's the only thing
    you ever hand over during the track — nothing gets uploaded to the platform.
 3. Build everything in `work/`. Keep `scripts/` pristine. **Every new notebook you create
