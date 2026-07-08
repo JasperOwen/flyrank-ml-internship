@@ -1,4 +1,4 @@
-# Research Question Framing: Lane 2 <Refresh Opportunity Scoring>
+# Research Question Framing: Lane 2, Refresh Opportunity Scoring
 
 ## Search question
 Which pages should be reviewed first for expansion, reduction or refreshing based on changes in visibility and engagement compared to their previous rates.
