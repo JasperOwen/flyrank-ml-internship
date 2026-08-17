@@ -1,0 +1,36 @@
+{
+  "notebook": "w05_model.ipynb",
+  "timestamp": "2026-08-17 10:07:24",
+  "dataset_filtered_rows": 13531,
+  "validation_split_strategy": "5-Fold GroupKFold on client_hash_id",
+  "base_rate": 0.1723449855886483,
+  "models_evaluated": {
+    "baseline_score": {
+      "p20_mean": 0.8800000000000001,
+      "p50_mean": 0.8160000000000001,
+      "p100_mean": 0.75
+    },
+    "logistic_regression": {
+      "p20_mean": 0.8400000000000001,
+      "p50_mean": 0.82,
+      "p100_mean": 0.826
+    },
+    "decision_tree": {
+      "p20_mean": 0.82,
+      "p50_mean": 0.844,
+      "p100_mean": 0.8220000000000001
+    },
+    "random_forest": {
+      "p20_mean": 0.9099999999999999,
+      "p50_mean": 0.876,
+      "p100_mean": 0.866
+    }
+  },
+  "best_model": "Random Forest (n=100, d=8)",
+  "best_model_precision_at_50": 0.876,
+  "top_3_features": {
+    "historical_tier_change": 0.2647171200958709,
+    "week1_avg_position": 0.25278779227218906,
+    "w1_tier": 0.18486475798372484
+  }
+}
