@@ -1,0 +1,9 @@
+{
+  "notebook": "w06_validation_audit.ipynb",
+  "timestamp": "2026-08-17 09:54:50",
+  "random_split_p50": 0.9,
+  "client_grouped_p50": 0.876,
+  "generalization_gap": 0.02400000000000002,
+  "leakage_audit_passed": true,
+  "claim_rewrites_completed": true
+}
