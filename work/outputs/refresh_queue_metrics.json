@@ -1,0 +1,27 @@
+{
+  "notebook": "capstone.ipynb",
+  "timestamp": "2026-09-01 14:11:22",
+  "total_pages_scored": 13531,
+  "action_breakdown": {
+    "monitor": 8237,
+    "review_for_refresh": 2520,
+    "review_for_expansion": 1536,
+    "review_title_and_ctr": 1238
+  },
+  "visibility_breakdown": {
+    "high": 6266,
+    "medium": 6918,
+    "low": 347
+  },
+  "priority_scores": {
+    "highest_score": 99.1,
+    "mean_score": 23.73,
+    "80th_percentile_score": 40.5,
+    "high_priority_review_count": 2713
+  },
+  "exported_artifacts": {
+    "queue_csv": "work/outputs/refresh_queue.csv",
+    "action_distribution_figure": "work/figures/action_distribution.png",
+    "score_distribution_figure": "work/figures/score_distribution.png"
+  }
+}
