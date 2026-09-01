@@ -7,8 +7,12 @@
 
 ## 0. Abstract
 
-Five sentences, written last, placed first: question → data → method → headline result →
-what the output is for. This is the top of your deployed paper.
+Search traffic decay can cause a major loss of discoverability and revenue for website owners. Therefore, as part of the Flyrank Refresh Opportunity Scoring Lane, I investigated whether observable page performance data can be used to identify signs of future content decay and prioritize web pages for review.
+
+Using 13,531 page records from March 2026, I created a leak-free 12-feature dataset, and evaluated multiple models on it using a 5-fold client-holdout split. My Random Forest model achieved a mean Precision@50 score of 0.876, which was the highest mean Precision@50 out of all my models.
+
+Finally, I converted these predictions into a priority score between 0 and 100, and created a series of recommended actions to accompany these priority scores. This resulted in 18.6% of the pages in the dataset (2,520/13,531) being given the review_for_refresh suggested action, which human editors can use as a guide when deciding if a page needs refreshing or not.
+
 
 ## 1. Problem framing
 
@@ -110,30 +114,52 @@ I defined the target label, future_decline, as 1 when a page's Late March (16-31
 
 ## 5. Evaluation
 
-Your split (grouped by client? time-aware?) and why. Metrics, model vs baseline **on the same
-split**. What the errors look like — a short error analysis beats a big metric table.
+I split my data into 5 GroupKFolds by client_hash_id. This meant that I used 5 folds where, in each fold, all the pages belonging to one client were either in the testing or training sections of the data. This meant that I could test my models on pages that belonged to clients they had never seen before, which prevented my models from accidentally trying to identify which client owned a page, instead of if that page was in decline or not. When I tried to use RandomKFolds, where a client's pages could be in either training or testing data, my Random Forest achieved an unusually high Precision@50 score of 0.9, which suggested that the random split was affected by data leakage, so I split my data using GroupKFolds for my final model.
+
+I evaluated the models using the same five client folds so that their Precision@20, Precision@50 and Precision@100 scores would reflect the models' performance across the same data, making the comparison fair. While I chose Precision@50 as my main metric, I also recorded each model's Precision@20 and Precision@100 scores to see how well each model performed across larger queues, and if there was a certain queue size that a particular model would be more suited for. 
+
+My Random Forest model achieved the highest Precision scores across each metric, with a Precision@20 score of 0.9100, Precision@50 score of 0.8760 and Precision@100 score of 0.8660 compared to my baseline's scores of 0.8800, 0.8160, 0.7500. 
+
+I also examined the errors that my Random Forest model made. An example of a false positive error was when my model gave a page a high probability of declining after my model observed that the page experienced a ranking drop in early March, but it recovered in the second half of March. This shows that my model can struggle to differentiate SERP turbulence from actual page decline. Also, an example of a false negative error was when a page did not decline in search rankings between weeks 1 and 2, so it was not flagged by my model. However, the page's search rankings did suddenly drop in late March. This shows that my model cannot identify when a page will suddenly decline.
+
 
 ## 6. Interpretation
 
-What the model/clusters actually found. Feature importances or cluster profiles in plain
-words. Surprises and negative results — a well-understood "no effect" is a valid result.
+When I examined the importance of the features used by my Random Forest model, the top 3 most important features were:
+* historical_tier_change
+* week1_avg_position
+* w1_tier
+
+Week1_avg_position and w1_tier are different versions of the same data: a page's search rankings in week 1. Combined with the fact that historical_tier_change is the most important feature to the model, this suggests that my model is using the momentum of a page’s search rankings to predict if it will decline.
+
+However, this does not necessarily mean that search rankings alone indicate how well a page is performing online. This just means that the main features used by my model to predict whether a page will decline in late march are related to a page's search rankings and the direction it is moving in those rankings.
+
 
 ## 7. Recommendation
 
-The ranked actions or decisions your output supports, and how a FlyRank editor would use them
-tomorrow. State your confidence and the limits explicitly.
+I have used my model to create a ranked queue that should be used to help FlyRank editors decide which pages to review first.
+
+The pages are ranked using a priority score that combines the Random Forest's probability of future decline with my baseline score. Each page is also given a reason code that explains why it has been ranked where it is and a suggested action for the editor to take, which will be one of the following:
+
+* review_for_refresh: The page's content should be reviewed for refresh
+* review_title_and_ctr: The page's title should be reviewed, to improve Click Through Rate (CTR)
+* review_for_expansion: The page's content does not need refreshing, but it could be expanded to improve the number of views
+* monitor: The page is not predicted to decline, it does not require a refresh at this time
+
+An editor could start with the highest-ranked pages, use the reason codes and performance data to understand why they were prioritised, and then look at the page and decide whether to refresh it, expand it, change the title, or do nothing at all. 
+
+I am confident that my ranked queue will be helpful to a Flyrank editor, as both my Random Forest and my baseline have high Precision@50 values across the 5 folds I evaluated them on: 0.876 for the Random Forest and 0.816 for my baseline rule. This suggests that both the model and the baseline rule are helpful for identifying pages that are likely to decline, allowing editors to prioritise these pages for review. However, the ranked queue is only meant to support the decisions of the editors. It does not guarantee that a page is in decline, or that carrying out the recommended action will improve the page's performance. The final decision of whether a page is declining, whether it should be refreshed or not, and what that refresh should be, is always up to the editor.
 
 ## 8. Reproducibility
 
-The exact commands to re-run everything from a fresh clone, your random seeds, and your
-environment (`pip freeze` highlights or `requirements.txt` deltas). If you claim a sealed or
-holdout evaluation, two things must be committed: the cell/script that builds the sealed
-frame, and the metrics file it produced — "evaluated once, blind" should be checkable from
-your repo, not taken on faith.
+To reproduce my work, clone this repository and open work/notebooks/capstone.ipynb in Google Colab (Google account required). The default Colab environment will be sufficient to run the notebook. No additional packages or specialist environments will be required.
+
+However, the notebook does require access to the FlyRank ML internship dataset on Hugging Face. To do this, you will need permission to access the dataset in Hugging Face, and you will need to add a Hugging Face token to Google Colab Secrets under the name HF_TOKEN. Once you have done this and given the notebook access to the dataset, you can click Runtime → Run all to run the notebook, which will create my features and target, evaluate my models using the 5-fold client-held-out validation, create the ranked queue, and export the queue and supporting figures, which will be found in Google Colab files in work/outputs and work/figures.
+
 
 ## 9. Acknowledgments & data credit
 
-Built on the FlyRank ML Internship dataset" **https://flyrank.ai**.
+Built on the FlyRank ML Internship dataset **https://flyrank.ai**.
 
 ---
 
